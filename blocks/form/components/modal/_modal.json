@@ -10,7 +10,8 @@
                   "template": {
                     "jcr:title": "Modal",
                     "fieldType": "panel",
-                    "fd:viewType": "modal"
+                    "fd:viewType": "modal",
+                    "visible": false
                   }
                 }
               }
