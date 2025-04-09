@@ -360,7 +360,8 @@ function enableAuthoringAssistantExtension() {
 
   //meta.content = 'https://localhost.corp.adobe.com:8013/resources/universal_editor.html?livecycle-forms-spa_version=local'; 
 meta.content =   'https://experience.adobe.com/solutions/livecycle-forms-spa/static-assets/resources/universal_editor.html?livecycle-forms-spa_version=PR-545-2dc9f7374e13b8c42f4b3daa651e3d3e62d0a96d';
-  //PR-530-51438302f0972ee340e528ce2ff3fac4b1bef201
+
+  //PR-545-2dc9f7374e13b8c42f4b3daa651e3d3e62d0a96d
 
  console.log('Adding meta tag for aem forms authoring assistant extension:', meta.content);
   document.head.appendChild(meta);
