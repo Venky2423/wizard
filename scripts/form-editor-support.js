@@ -354,20 +354,55 @@ export function attachEventListners(main) {
   document.body.addEventListener('aue:ui-edit', ueEditModeHandler);
 }
 
+function getAuthoringAssistantUrl() {
+  const LOCAL_URL = 'https://localhost.corp.adobe.com:8014/dist/universal_editor.html';
+  const PROD_URL = 'https://experience.adobe.com/solutions/livecycle-authoring-assistant-spa/static-assets/universal_editor.html';
+  const STAGE_URL = 'https://experience-stage.adobe.com/solutions/livecycle-authoring-assistant-spa/static-assets/universal_editor.html';
+
+  const params = new URLSearchParams(window.location.search);
+  const version = params.get('livecycle-authoring-assistant-spa_version');
+  const endpoint = params.get('endpoint');
+
+  console.log('AEM Forms Authoring Assistant extension version:', version);
+
+  // Determine base URL based on version
+  let baseUrl;
+  if (version === 'local') {
+    baseUrl = LOCAL_URL;
+  } else {
+    baseUrl = version ? PROD_URL : STAGE_URL;
+  }
+
+  // Construct URL with parameters
+  const url = new URL(baseUrl);
+  if (version) {
+    url.searchParams.append('livecycle-authoring-assistant-spa_version', version);
+  }
+  if (endpoint) {
+    url.searchParams.append('endpoint', endpoint);
+  }
+
+  return url.toString();
+}
+    
 function enableAuthoringAssistantExtension() {
   const meta = document.createElement('meta');
   meta.name = 'urn:adobe:aue:config:extensions';
-
-  //meta.content = 'https://localhost.corp.adobe.com:8013/resources/universal_editor.html?livecycle-forms-spa_version=local'; 
-meta.content =   'https://experience.adobe.com/solutions/livecycle-forms-spa/static-assets/resources/universal_editor.html?livecycle-forms-spa_version=PR-545-2dc9f7374e13b8c42f4b3daa651e3d3e62d0a96d';
-
-  //PR-545-2dc9f7374e13b8c42f4b3daa651e3d3e62d0a96d
+  //meta.content = getAuthoringAssistantUrl();
+  //meta.content = 'https://localhost.corp.adobe.com:8013/resources/universal_editor.html'; //<<<< this is static url
+   //meta.content = 'https://localhost.corp.adobe.com:8013/resources/universal_editor.html?livecycle-forms-spa_version=local';
+ // meta.content = 'https://localhost.corp.adobe.com:8013/resources/universal_editor.html?livecycle-forms-spa_version=local';
+  //meta.content = 'https://127.0.0.1:8013/resources/form_properties.html?livecycle-forms-spa_version=local';
+  //meta.content = 'https://experience-qa.adobe.com/?livecycle-forms-spa_version=PR-519-d27b873d572d6f211f558aa51cb8853f02f1cf4d&repo=author-p98711-e226383-cmstg.adobeaemcloud.com#/@908978/aem/forms/af/create';
+ // meta.content = 'https://experience.adobe.com/solutions/livecycle-forms-spa/resources/form_properties.html?livecycle-forms-spa_version=PR-519-d27b873d572d6f211f558aa51cb8853f02f1cf4d&repo=author-p98711-e226383-cmstg.adobeaemcloud.com';
+ //meta.content = 'https://experience.adobe.com/solutions/livecycle-forms-spa/static-assets/resources/universal_editor.html?livecycle-forms-spa_version=PR-545-ae9a211a8d46f4cde193a05f5ae97d747bf73132';
+ //meta.content =   'https://experience.adobe.com/solutions/livecycle-forms-spa/static-assets/resources/universal_editor.html?livecycle-forms-spa_version=PR-545-2dc9f7374e13b8c42f4b3daa651e3d3e62d0a96d';
+ meta.content =   'https://experience.adobe.com/solutions/livecycle-forms-spa/static-assets/resources/universal_editor.html?livecycle-forms-spa_version=PR-547-c9337beb2e8e086d4222c2e4f8f64d115ab57038';
 
  console.log('Adding meta tag for aem forms authoring assistant extension:', meta.content);
   document.head.appendChild(meta);
 }
 enableAuthoringAssistantExtension();
-
 
 const observer = new MutationObserver(instrumentForms);
 observer.observe(document, { childList: true, subtree: true, attributeFilter: ['form'] });
